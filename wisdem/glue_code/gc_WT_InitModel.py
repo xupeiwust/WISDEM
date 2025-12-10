@@ -56,9 +56,8 @@ def yaml2openmdao(wt_opt, modeling_options, wt_init, opt_options):
 
     if modeling_options["flags"]["drivetrain"] or modeling_options["flags"]["blade"] or user_elastic or modeling_options["user_elastic"]["blade"]:
         drivetrain = wt_init["components"]["drivetrain"]
-        wt_opt = assign_drivetrain_values(wt_opt, modeling_options, drivetrain, modeling_options["flags"], user_elastic)
-        if "yaw_system_mass_user" in wt_init["components"]["yaw"]:
-            wt_opt["drivetrain.yaw_system_mass_user"] = wt_init["components"]["yaw"]["yaw_system_mass_user"]
+        yaw = wt_init["components"]["yaw"]
+        wt_opt = assign_drivetrain_values(wt_opt, modeling_options, drivetrain, yaw, modeling_options["flags"], user_elastic)
 
         if modeling_options["flags"]["drivetrain"] or user_elastic:
             wt_opt = assign_generator_values(wt_opt, modeling_options, drivetrain, modeling_options["flags"], user_elastic)
@@ -686,7 +685,7 @@ def assign_hub_values(wt_opt, hub, flags, user_elastic):
     return wt_opt
 
 
-def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, flags, user_elastic):
+def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, yaw, flags, user_elastic):
     # Common direct and geared
     wt_opt["drivetrain.uptilt"] = drivetrain["outer_shape"]["uptilt"]
     wt_opt["drivetrain.distance_tt_hub"] = drivetrain["outer_shape"]["distance_tt_hub"]
@@ -767,8 +766,11 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, flags, user_e
             if "gearbox_length_user" in drivetrain["gearbox"]:
                 wt_opt["drivetrain.gearbox_length_user"] = drivetrain["gearbox_length_user"]
 
+    if "yaw_system_mass_user" in yaw:
+        wt_opt["drivetrain.yaw_system_mass_user"] = yaw["yaw_system_mass_user"]
+
     elif user_elastic:
-        wt_opt["drivese.yaw_mass"]          = drivetrain["yaw"]["elastic_properties"]["mass"]
+        wt_opt["drivese.yaw_mass"]          = yaw["elastic_properties"]["mass"]
         wt_opt["drivese.above_yaw_mass"]    = drivetrain["elastic_properties"]["mass"]
         wt_opt["drivese.above_yaw_cm"]      = drivetrain["elastic_properties"]["location"]
         wt_opt["drivese.drivetrain_spring_constant"]     = drivetrain["elastic_properties"]["spring_constant"]
