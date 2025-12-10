@@ -591,6 +591,7 @@ properties:
                                 description: Permanent magnet cost
             yaw:
                 type: object
+                default: {}
                 properties:
                     yaw_system_mass_user:
                         type: number
