@@ -57,6 +57,8 @@ def yaml2openmdao(wt_opt, modeling_options, wt_init, opt_options):
     if modeling_options["flags"]["drivetrain"] or modeling_options["flags"]["blade"] or user_elastic or modeling_options["user_elastic"]["blade"]:
         drivetrain = wt_init["components"]["drivetrain"]
         wt_opt = assign_drivetrain_values(wt_opt, modeling_options, drivetrain, modeling_options["flags"], user_elastic)
+        if "yaw_system_mass_user" in wt_init["components"]["yaw"]:
+            wt_opt["drivetrain.yaw_system_mass_user"] = wt_init["components"]["yaw"]["yaw_system_mass_user"]
 
         if modeling_options["flags"]["drivetrain"] or user_elastic:
             wt_opt = assign_generator_values(wt_opt, modeling_options, drivetrain, modeling_options["flags"], user_elastic)
@@ -699,6 +701,8 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, flags, user_e
         wt_opt["drivetrain.lss_wall_thickness"] = drivetrain["lss"]["wall_thickness"]
         wt_opt["drivetrain.lss_diameter"] = drivetrain["lss"]["diameter"]
         wt_opt["drivetrain.lss_material"] = drivetrain["lss"]["material"]
+        if "mass_user" in drivetrain["lss"]:
+            wt_opt["drivetrain.lss_mass_user"] = drivetrain["lss"]["mass_user"]
         wt_opt["drivetrain.mb1Type"] = drivetrain["other_components"]["mb1Type"]
         wt_opt["drivetrain.mb2Type"] = drivetrain["other_components"]["mb2Type"]
         wt_opt["drivetrain.uptower"] = drivetrain["other_components"]["uptower"]
@@ -716,15 +720,10 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, flags, user_e
             wt_opt["drivetrain.converter_mass_user"] = drivetrain["other_components"]["converter_mass_user"]
         if "transformer_mass_user" in drivetrain["other_components"]:
             wt_opt["drivetrain.transformer_mass_user"] = drivetrain["other_components"]["transformer_mass_user"]
-
-        # if "yaw_mass_user" in drivetrain["other_components"]:
-        #     wt_opt["drivetrain.yaw_mass_user"] = drivetrain["other_components"]["yaw_mass_user"]
-        # if "above_yaw_mass_user" in drivetrain["other_components"]:
-        #     wt_opt["drivetrain.above_yaw_mass_user"] = drivetrain["other_components"]["above_yaw_mass_user"]
-        # if "above_yaw_I_user" in drivetrain["other_components"]:
-        #     wt_opt["drivetrain.above_yaw_I_user"] = drivetrain["other_components"]["above_yaw_I_user"]
-        # if "above_yaw_cm_user" in drivetrain["other_components"]:
-        #     wt_opt["drivetrain.above_yaw_cm_user"] = drivetrain["other_components"]["above_yaw_cm_user"]
+        if "platform_mass_user" in drivetrain["other_components"]:
+            wt_opt["drivetrain.platform_mass_user"] = drivetrain["other_components"]["platform_mass_user"]
+        if "cover_mass_user" in drivetrain["other_components"]:
+            wt_opt["drivetrain.cover_mass_user"] = drivetrain["other_components"]["cover_mass_user"]
 
         if "spring_constant_user" in drivetrain:
             wt_opt["drivetrain.drivetrain_spring_constant_user"]     = drivetrain["spring_constant_user"]
@@ -754,6 +753,8 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, flags, user_e
             wt_opt["drivetrain.hss_diameter"] = drivetrain["hss"]["diameter"]
             wt_opt["drivetrain.hss_length"] = drivetrain["hss"]["length"]
             wt_opt["drivetrain.hss_material"] = drivetrain["hss"]["material"]
+            if "mass_user" in drivetrain["hss"]:
+                wt_opt["drivetrain.hss_mass_user"] = drivetrain["hss"]["mass_user"]
             wt_opt["drivetrain.bedplate_flange_width"] = drivetrain["bedplate"]["flange_width"]
             wt_opt["drivetrain.bedplate_flange_thickness"] = drivetrain["bedplate"]["flange_thickness"]
             wt_opt["drivetrain.bedplate_web_thickness"] = drivetrain["bedplate"]["web_thickness"]
@@ -766,33 +767,20 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, flags, user_e
             if "gearbox_length_user" in drivetrain["gearbox"]:
                 wt_opt["drivetrain.gearbox_length_user"] = drivetrain["gearbox_length_user"]
 
-
     elif user_elastic:
-        # windio v2
-        #wt_opt["drivese.yaw_mass"]          = drivetrain["yaw"]["elastic_properties"]["mass"]
-        #wt_opt["drivese.above_yaw_mass"]    = drivetrain["elastic_properties"]["mass"]
-        #wt_opt["drivese.above_yaw_cm"]      = drivetrain["elastic_properties"]["location"]
-        #wt_opt["drivese.drivetrain_spring_constant"]     = drivetrain["elastic_properties"]["spring_constant"]
-        #wt_opt["drivese.drivetrain_damping_coefficient"] = drivetrain["elastic_properties"]["damping_coefficient"]
-        #MoI_setter(wt_opt, "drivese.above_yaw_I_TT", drivetrain["elastic_properties"]["inertia"])
-        #MoI_setter(wt_opt, "drivese.above_yaw_I", drivetrain["elastic_properties"]["inertia"])
-        #if wt_opt["drivetrain.gear_ratio"] > 1:
-        #    wt_opt["drivese.gearbox_mass"]  = drivetrain["gearbox"]["elastic_properties"]["mass"]
-        #    wt_opt["drivese.gearbox_I"]     = drivetrain["gearbox"]["elastic_properties"]["inertia"]
-        #    #wt_opt["drivese.gearbox_cm"]    = drivetrain["gearbox"]["elastic_properties"]["location"]
-        #    #wt_opt["drivese.gearbox_stiffness"] = drivetrain["gearbox"]["elastic_properties"]["torsional_stiffness"]
-        #    #wt_opt["drivese.gearbox_damping"] = drivetrain["gearbox"]["elastic_properties"]["torsional_damping"]
-        # windio v1
-        wt_opt["drivese.yaw_mass"]          = drivetrain["elastic_properties_mb"]["yaw_mass"]
-        wt_opt["drivese.above_yaw_mass"]    = drivetrain["elastic_properties_mb"]["system_mass"]
-        wt_opt["drivese.above_yaw_cm"]      = drivetrain["elastic_properties_mb"]["system_center_mass"]
-        wt_opt["drivese.drivetrain_spring_constant"]     = drivetrain["elastic_properties_mb"]["spring_constant"]
-        wt_opt["drivese.drivetrain_damping_coefficient"] = drivetrain["elastic_properties_mb"]["damping_coefficient"]
-        MoI_setter(wt_opt, "drivese.above_yaw_I_TT", drivetrain["elastic_properties_mb"]["system_inertia_tt"])
-        MoI_setter(wt_opt, "drivese.above_yaw_I", drivetrain["elastic_properties_mb"]["system_inertia"])
-        wt_opt["drivese.rna_mass"] = wt_opt["drivese.above_yaw_mass"] + wt_opt["drivese.yaw_mass"]
-        wt_opt["drivese.rna_cm"]   = wt_opt["drivese.above_yaw_cm"]
-        wt_opt["drivese.rna_I_TT"] = wt_opt["drivese.above_yaw_I_TT"]
+        wt_opt["drivese.yaw_mass"]          = drivetrain["yaw"]["elastic_properties"]["mass"]
+        wt_opt["drivese.above_yaw_mass"]    = drivetrain["elastic_properties"]["mass"]
+        wt_opt["drivese.above_yaw_cm"]      = drivetrain["elastic_properties"]["location"]
+        wt_opt["drivese.drivetrain_spring_constant"]     = drivetrain["elastic_properties"]["spring_constant"]
+        wt_opt["drivese.drivetrain_damping_coefficient"] = drivetrain["elastic_properties"]["damping_coefficient"]
+        MoI_setter(wt_opt, "drivese.above_yaw_I_TT", drivetrain["elastic_properties"]["inertia"])
+        MoI_setter(wt_opt, "drivese.above_yaw_I", drivetrain["elastic_properties"]["inertia"])
+        if wt_opt["drivetrain.gear_ratio"] > 1:
+           wt_opt["drivese.gearbox_mass"]  = drivetrain["gearbox"]["elastic_properties"]["mass"]
+           wt_opt["drivese.gearbox_I"]     = drivetrain["gearbox"]["elastic_properties"]["inertia"]
+           #wt_opt["drivese.gearbox_cm"]    = drivetrain["gearbox"]["elastic_properties"]["location"]
+           #wt_opt["drivese.gearbox_stiffness"] = drivetrain["gearbox"]["elastic_properties"]["torsional_stiffness"]
+           #wt_opt["drivese.gearbox_damping"] = drivetrain["gearbox"]["elastic_properties"]["torsional_damping"]
 
     return wt_opt
 

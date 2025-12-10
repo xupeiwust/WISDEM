@@ -870,6 +870,7 @@ class WindTurbineOntologyPython(object):
             
             if "yaw" not in self.wt_init["components"]:
                 self.wt_init["components"]["yaw"] = {}
+            if "elastic_properties" not in self.wt_init["components"]["yaw"]:
                 self.wt_init["components"]["yaw"]["elastic_properties"] = {}
             self.wt_init["components"]["yaw"]["elastic_properties"]["mass"] = float(wt_opt["drivese.yaw_mass"][0])
             self.wt_init["components"]["yaw"]["elastic_properties"]["inertia"] = np.zeros(3).tolist()
