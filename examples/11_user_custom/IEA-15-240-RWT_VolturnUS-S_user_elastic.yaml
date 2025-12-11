@@ -694,7 +694,7 @@ components:
                 location: [0.0, 0.0, 0.0]
     yaw:
         elastic_properties:
-            mass: 10000
+            mass: 0
             inertia: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
             location: [0.0, 0.0, 0.0]
     tower:
