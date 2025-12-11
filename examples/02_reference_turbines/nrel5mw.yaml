@@ -652,8 +652,8 @@ components:
             distance_tt_hub: 2.3
             overhang: 5.0
         gearbox:
-            gear_ratio: 96
-            efficiency: 0.975
+            gear_ratio: 97.0
+            efficiency: 1.0
             damping_ratio: 0.01
             gear_configuration: eep
             planet_numbers: [3, 3, 0]
@@ -677,6 +677,9 @@ components:
             mb2Type: SRB
             uptower: true
         generator:
+            generator_rpm_efficiency_user:
+                grid: [0., 1.]
+                values: [0.944, 0.944]
             rated_rpm: 1200.0
             rho_Fe: 7700.0
             rho_Fes: 7850.0
