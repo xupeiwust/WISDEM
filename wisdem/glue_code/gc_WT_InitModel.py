@@ -672,14 +672,9 @@ def assign_hub_values(wt_opt, hub, flags, user_elastic):
 
     elif user_elastic:
         # Note that this is stored in the drivese namespace per gc_WT_DataStruct to mimic DrivetrainSE
-        # windio v2
-        #wt_opt["drivese.hub_system_mass"]         = hub["elastic_properties"]["mass"]
-        #wt_opt["drivese.hub_system_cm"]           = hub["elastic_properties"]["location"]
-        #MoI_setter(wt_opt, "drivese.hub_system_I", hub["elastic_properties"]["inertia"])
-        # windio v1
-        wt_opt["drivese.hub_system_mass"] = hub["elastic_properties_mb"]["system_mass"]
-        wt_opt["drivese.hub_system_cm"] = hub["elastic_properties_mb"]["system_center_mass"][0]
-        MoI_setter(wt_opt, "drivese.hub_system_I", hub["elastic_properties_mb"]["system_inertia"])
+        wt_opt["drivese.hub_system_mass"] = hub["elastic_properties"]["mass"]
+        wt_opt["drivese.hub_system_cm"] = hub["elastic_properties"]["location"][0]
+        MoI_setter(wt_opt, "drivese.hub_system_I", hub["elastic_properties"]["inertia"])
         # TODO: This cm isn"t right.  OpenFAST CM is measured from rotor apex.  WISDEM CM is measured from hub flange.
 
     return wt_opt
@@ -766,7 +761,7 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, yaw, flags, u
             if "gearbox_length_user" in drivetrain["gearbox"]:
                 wt_opt["drivetrain.gearbox_length_user"] = drivetrain["gearbox_length_user"]
 
-    if "yaw_system_mass_user" in yaw:
+    if "yaw_system_mass_user" in yaw and not user_elastic:
         wt_opt["drivetrain.yaw_system_mass_user"] = yaw["yaw_system_mass_user"]
 
     elif user_elastic:
@@ -789,8 +784,7 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, yaw, flags, u
 
 def assign_generator_values(wt_opt, modeling_options, drivetrain, flags, user_elastic):
     if user_elastic:
-        #MoI_setter(wt_opt, "drivese.generator_rotor_I", drivetrain["generator"]["elastic_properties"]["rotor_inertia"])
-        MoI_setter(wt_opt, "drivese.generator_rotor_I", drivetrain["generator"]["elastic_properties_mb"]["rotor_inertia"])
+        MoI_setter(wt_opt, "drivese.generator_rotor_I", drivetrain["generator"]["elastic_properties"]["rotor_inertia"])
     else:
         wt_opt["generator.L_generator"] = drivetrain["generator"]["length"]
         if "mass_user" in drivetrain["generator"]:
