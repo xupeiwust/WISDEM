@@ -787,17 +787,17 @@ def assign_generator_values(wt_opt, modeling_options, drivetrain, flags, user_el
         MoI_setter(wt_opt, "drivese.generator_rotor_I", drivetrain["generator"]["elastic_properties"]["rotor_inertia"])
     else:
         wt_opt["generator.L_generator"] = drivetrain["generator"]["length"]
-        if "mass_user" in drivetrain["generator"]:
-            wt_opt["generator.generator_mass_user"] = drivetrain["generator"]["mass_user"]
+        if "mass" in drivetrain["generator"]:
+            wt_opt["generator.generator_mass_user"] = drivetrain["generator"]["mass"]
 
         if not flags["generator"]:
-            if "radius_user" in drivetrain["generator"]:
-                wt_opt["generator.generator_radius_user"] = drivetrain["generator"]["radius_user"]
+            if "radius" in drivetrain["generator"]:
+                wt_opt["generator.generator_radius_user"] = drivetrain["generator"]["radius"]
 
-            if "rpm_efficiency_user" in drivetrain["generator"]:
+            if "rpm_efficiency" in drivetrain["generator"]:
                 eff_user = np.c_[
-                    drivetrain["generator"]["rpm_efficiency_user"]["grid"],
-                    drivetrain["generator"]["rpm_efficiency_user"]["values"],
+                    drivetrain["generator"]["rpm_efficiency"]["grid"],
+                    drivetrain["generator"]["rpm_efficiency"]["values"],
                 ]
                 n_pc = modeling_options["WISDEM"]["RotorSE"]["n_pc"]
                 if np.any(eff_user):

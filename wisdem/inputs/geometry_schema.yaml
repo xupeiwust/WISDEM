@@ -211,37 +211,6 @@ properties:
                     generator:
                         type: object
                         properties:
-                            generator_mass_user:
-                                type: number
-                                default: 0.0
-                                description: Override regular calculation of generator mass (bottom-up or regression-based) with this value
-                                minimum: 0.0
-                            generator_length:
-                                type: number
-                                description: Length of generator along the shaft
-                                unit: meter
-                                minimum: 0.
-                                maximum: 20.
-                                default: 2.0
-                            generator_radius_user:
-                                type: number
-                                description: User input override of generator radius, only used when using simple generator scaling
-                                unit: m
-                                minimum: 0.
-                                maximum: 20.0
-                                default: 0.0
-                            generator_rpm_efficiency_user:
-                                type: object
-                                description: User input override of generator rpm-efficiency values, with rpm as grid input and eff as values input
-                                default: {'grid':[0.0], 'values':[0.0]}
-                                required:
-                                    - grid
-                                    - values
-                                properties:
-                                    grid:
-                                        $ref: "#/definitions/distributed_data/length"
-                                    values:
-                                        $ref: "#/definitions/distributed_data/length"
                             generator_type:
                                 type: string
                                 default: DFIG
