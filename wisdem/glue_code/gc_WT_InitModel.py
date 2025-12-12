@@ -761,23 +761,23 @@ def assign_drivetrain_values(wt_opt, modeling_options, drivetrain, yaw, flags, u
             if "gearbox_length_user" in drivetrain["gearbox"]:
                 wt_opt["drivetrain.gearbox_length_user"] = drivetrain["gearbox_length_user"]
 
-    if "yaw_system_mass_user" in yaw and not user_elastic:
-        wt_opt["drivetrain.yaw_system_mass_user"] = yaw["yaw_system_mass_user"]
+        if "yaw_system_mass_user" in yaw and not user_elastic:
+            wt_opt["drivetrain.yaw_system_mass_user"] = yaw["yaw_system_mass_user"]
 
-    elif user_elastic:
-        wt_opt["drivese.yaw_mass"]          = yaw["elastic_properties"]["mass"]
-        wt_opt["drivese.above_yaw_mass"]    = drivetrain["elastic_properties"]["mass"]
-        wt_opt["drivese.above_yaw_cm"]      = drivetrain["elastic_properties"]["location"]
-        wt_opt["drivese.drivetrain_spring_constant"]     = drivetrain["elastic_properties"]["spring_constant"]
-        wt_opt["drivese.drivetrain_damping_coefficient"] = drivetrain["elastic_properties"]["damping_coefficient"]
-        MoI_setter(wt_opt, "drivese.above_yaw_I_TT", drivetrain["elastic_properties"]["inertia"])
-        MoI_setter(wt_opt, "drivese.above_yaw_I", drivetrain["elastic_properties"]["inertia"])
-        if wt_opt["drivetrain.gear_ratio"] > 1:
-           wt_opt["drivese.gearbox_mass"]  = drivetrain["gearbox"]["elastic_properties"]["mass"]
-           wt_opt["drivese.gearbox_I"]     = drivetrain["gearbox"]["elastic_properties"]["inertia"]
-           #wt_opt["drivese.gearbox_cm"]    = drivetrain["gearbox"]["elastic_properties"]["location"]
-           #wt_opt["drivese.gearbox_stiffness"] = drivetrain["gearbox"]["elastic_properties"]["torsional_stiffness"]
-           #wt_opt["drivese.gearbox_damping"] = drivetrain["gearbox"]["elastic_properties"]["torsional_damping"]
+        elif user_elastic:
+            wt_opt["drivese.yaw_mass"]          = yaw["elastic_properties"]["mass"]
+            wt_opt["drivese.above_yaw_mass"]    = drivetrain["elastic_properties"]["mass"]
+            wt_opt["drivese.above_yaw_cm"]      = drivetrain["elastic_properties"]["location"]
+            wt_opt["drivese.drivetrain_spring_constant"]     = drivetrain["elastic_properties"]["spring_constant"]
+            wt_opt["drivese.drivetrain_damping_coefficient"] = drivetrain["elastic_properties"]["damping_coefficient"]
+            MoI_setter(wt_opt, "drivese.above_yaw_I_TT", drivetrain["elastic_properties"]["inertia"])
+            MoI_setter(wt_opt, "drivese.above_yaw_I", drivetrain["elastic_properties"]["inertia"])
+            if wt_opt["drivetrain.gear_ratio"] > 1:
+               wt_opt["drivese.gearbox_mass"]  = drivetrain["gearbox"]["elastic_properties"]["mass"]
+               wt_opt["drivese.gearbox_I"]     = drivetrain["gearbox"]["elastic_properties"]["inertia"]
+               #wt_opt["drivese.gearbox_cm"]    = drivetrain["gearbox"]["elastic_properties"]["location"]
+               #wt_opt["drivese.gearbox_stiffness"] = drivetrain["gearbox"]["elastic_properties"]["torsional_stiffness"]
+               #wt_opt["drivese.gearbox_damping"] = drivetrain["gearbox"]["elastic_properties"]["torsional_damping"]
 
     return wt_opt
 
