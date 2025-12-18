@@ -31,6 +31,8 @@ class TestDirectLayout(unittest.TestCase):
         self.inputs["hub_diameter"] = 4.0
 
         self.inputs["lss_rho"] = self.inputs["bedplate_rho"] = 7850.0
+        self.inputs["lss_mass_user"] = 0.
+
         for k in self.inputs:
             self.inputs[k] = np.array( [self.inputs[k]] )
 
@@ -370,6 +372,8 @@ class TestGearedLayout(unittest.TestCase):
         self.inputs["hub_diameter"] = 4.0
 
         self.inputs["lss_rho"] = self.inputs["hss_rho"] = self.inputs["bedplate_rho"] = 7850.0
+        self.inputs["lss_mass_user"] = 0.
+        self.inputs["hss_mass_user"] = 0.
         for k in self.inputs:
             self.inputs[k] = np.array( [self.inputs[k]] )
 
