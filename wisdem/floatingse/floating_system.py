@@ -554,7 +554,7 @@ class PlatformTurbineSystem(om.ExplicitComponent):
             R = cg_variable - cg_variable_member[k, :]
             I_variable_member = np.array(I_k_rot) + m_variable_member[k] * (np.dot(R, R) * np.eye(3) - np.outer(R, R))
             I_variable += I_variable_member
-            outputs[f"member{k}_{kname}:variable_ballast_I"] = util.unassembleI(I_variable_member)
+            outputs[f"member{k}_{kname}:variable_ballast_I"] = util.unassembleI(I_k_rot) # want I in local member coordinate system
 
         # Find platform I with variable contribution
         I_total = np.zeros((3, 3))

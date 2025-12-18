@@ -2153,7 +2153,8 @@ class MooringProperties(om.ExplicitComponent):
                     "line_tangential_drag",
                 ]
                 for var in varlist:
-                    outputs[var][i_line] = d2 * inputs[var + "_coeff"]
+                    outputs[var] = d2 * inputs[var + "_coeff"]
+                line_props = None
 
             elif lm == "chain_stud":
                 line_props = getLineProps(1e3 * d[i_line]/1.89, material='chain_studlink', source='default')
