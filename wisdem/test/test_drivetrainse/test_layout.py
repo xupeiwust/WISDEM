@@ -366,7 +366,7 @@ class TestGearedLayout(unittest.TestCase):
         self.inputs["bedplate_flange_thickness"] = 0.05
         # self.inputs['bedplate_web_height'] = 1.0
         self.inputs["bedplate_web_thickness"] = 0.05
-        self.inputs["bedplate_mass_user"] = [0.]
+        self.inputs["bedplate_mass_user"] = 0.
 
         self.inputs["D_top"] = 6.5
         self.inputs["hub_diameter"] = 4.0
